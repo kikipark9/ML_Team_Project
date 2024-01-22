@@ -22,8 +22,7 @@ def run_ml(df):
 
     st.markdown("""
     ## 머신러닝 예측 개요
-    머신러닝 예측 페이지입니다.
-                """)
+    """)
     
     selected = option_menu(None, ['Home', '성능비교', '테스트 결과', '고객별 예측'],
                            icons=['house', 'bar-chart', 'card-checklist', 'person-bounding-box'],
@@ -38,11 +37,11 @@ def run_ml(df):
     
     if selected == 'Home':
         home()
-    elif selected == '주거형태별':
+    elif selected == '성능비교':
         pass
-    elif selected == '자치구역별':
+    elif selected == '테스트 결과':
         pass
-    elif selected == '보고서':
+    elif selected == '고객별 예측':
         pass
     else:
         st.warning('Wrong')
