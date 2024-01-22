@@ -3,11 +3,14 @@
 import streamlit as st
 import pandas as pd
 from streamlit_option_menu import option_menu
+from ml.comparing import run_comparing
+from ml.result_test import run_test
+from ml.result_prediction import run_prediction
 
 
 def home():
     st.markdown('''
-    ### 머신러닝 예측 개요
+    ### 머신러닝 개요
     - 모델별 성능 비교
         - Logistic Regression, Decision Tree, Random Forest, XGBoost, LGBM, CatBoost
     - 
@@ -15,13 +18,8 @@ def home():
 
 
 def run_ml(df):
-    customers = df['CustomerId']
-    df = df.drop(columns=['id', 'CustomerId', 'Surname'])
-    X = df.drop(['Exited'], axis=1)
-    y = df['Exited']
-
     st.markdown("""
-    ## 머신러닝 예측 개요
+    ## 머신러닝을 활용한 고객별 이탈 예측
     """)
     
     selected = option_menu(None, ['Home', '성능비교', '테스트 결과', '고객별 예측'],
@@ -38,10 +36,10 @@ def run_ml(df):
     if selected == 'Home':
         home()
     elif selected == '성능비교':
-        pass
+        run_comparing(df)
     elif selected == '테스트 결과':
-        pass
+        run_test()
     elif selected == '고객별 예측':
-        pass
+        run_prediction()
     else:
         st.warning('Wrong')
