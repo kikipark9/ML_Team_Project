@@ -10,13 +10,13 @@ import joblib
 @st.cache_data
 def load_data():
     current_dir = os.getcwd()
-    data = pd.read_csv('../data/train.csv/train.csv')
+    data = pd.read_csv('data/train.csv/train.csv')
     return data
 
 
 @st.cache_data
 def load_test_data():
-    data = pd.read_csv('../data/bank_turnover/Churn_Modelling.csv')
+    data = pd.read_csv('data/bank_turnover/Churn_Modelling.csv')
     return data
 
 
@@ -65,9 +65,9 @@ def load_models():
         'xgb': 'XGBoost',
         'rf': 'Random Forest'
     }
-    for filename in os.listdir('./ml/models'):
+    for filename in os.listdir('streamlit/ml/models'):
         if filename.endswith('_gs.joblib'):
-            model_path = os.path.join('./ml/models', filename)
+            model_path = os.path.join('streamlit/ml/models', filename)
             loaded_model = joblib.load(model_path)
             
             name = filename.split('_gs')[0]
