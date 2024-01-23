@@ -3,6 +3,7 @@ from utils import load_data
 import streamlit as st
 from millify import prettify
 from io import StringIO
+import streamlit.components.v1 as components
 
 def run_home():
     df = load_data()
@@ -25,11 +26,9 @@ def run_home():
         with col1:
             st.text(info)
         with col2:
-            st.markdown('''
-            - 데이터 포인트 : 165,034 
-            - 컬럼 수 : 14개
-            - 결측치 : 0개
-            ''')
+            st.metric(label="데이터 포인트", value=prettify(df.shape[0]))
+            st.metric(label="컬럼 수", value=prettify(df.shape[1]))
+            st.metric(label="결측치", value=prettify(df.isnull().sum().sum()))
                         
     with tab2:
         col1, col2 = st.columns([1, 1])
@@ -53,27 +52,7 @@ def run_home():
             - NumOfProducts : 가입 상품
             - EstimatedSalary : 추정 연봉
             ''')        
-
-    # col1, col2 = st.columns([2, 1])
-    # with col1:
-    #     st.text(info)
-    # with col2:
-    #     st.markdown('''
-    #     ##### 범주형 변수
-    #     - HasCrCard : 신용카드 보유
-    #     - IsActiveMember : 활성멤버
-    #     - Geography : 거주 국가
-    #     - Gender : 성별
-    #     ##### 수치형 변수
-    #     - CreditScore : 신용점수
-    #     - Age : 나이
-    #     - Tenure : 거래 기간
-    #     - Balance : 잔고
-    #     - NumOfProducts : 가입 상품
-    #     - EstimatedSalary : 추정 연봉
-    #     ##### 타겟 변수
-    #     - Exited : 고객 이탈 여부(0, 1)
-    #     ''')
+            
         
     st.markdown('<hr>', unsafe_allow_html=True)                
     df['CustomerId'] = df['CustomerId'].astype(str)

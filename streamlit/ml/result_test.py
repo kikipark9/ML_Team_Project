@@ -21,7 +21,7 @@ def get_clf_eval(y_test, pred, pred_proba):
 
 def plot_confusion_matrix(confusion):
     plt.figure(figsize=(8, 6))
-    sns.heatmap(confusion, annot=True, fmt='g', cmap='Blues')
+    sns.heatmap(confusion, annot=True, fmt='g', cmap='Blues', linewidths=0.8)
     plt.xlabel('Predicted')
     plt.ylabel('Actual')    
     st.pyplot(plt)
@@ -34,8 +34,8 @@ def print_clf_eval(y_test, pred, pred_proba):
     st.markdown("#### Confusion Matrix")
     plot_confusion_matrix(confusion)
     result = pd.DataFrame({'Accuracy': [acc], 'Precision': [pre], 'Recall': [re], 'F1': [f1], 'ROC_AUC': [auc]})
-    st.markdown("##### Metiric Result")
-    st.dataframe(result, use_container_width=True)    
+    st.markdown("##### 평가 지표")
+    st.dataframe(result, use_container_width=True)
 
     
 def run_test():
