@@ -36,6 +36,21 @@ def do_preprocess(df):
     return X_test, y_test, customers
 
 
+@st.cache_data
+def process_test_data(df):
+    df = df.drop(columns=['RowNumber', 'Surname'])
+    df.drop_duplicates(inplace=True)
+    df.dropna(inplace=True)
+
+    customers = df['CustomerId']
+    df_test = df.drop(columns=['CustomerId'])
+    ndf = pd.get_dummies(df_test, columns=['Geography','Gender'])
+
+    X = ndf.drop(['Exited'], axis=1)
+    y = ndf['Exited']
+    return X, y, customers
+
+
 @st.cache_resource
 def load_models():
     models = []

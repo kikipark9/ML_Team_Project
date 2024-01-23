@@ -17,7 +17,7 @@ def run_home():
     info = buffer.getvalue()
 
     st.markdown('<hr>', unsafe_allow_html=True)
-    st.markdown('### 데이터 현황')
+    st.markdown('#### 데이터 현황')
     
     col1, col2 = st.columns([2, 1])
     with col1:
@@ -59,7 +59,7 @@ def run_home():
             'IsActiveMember', help='IsActiveMember'
         )
     }
-
+    st.markdown('#### 데이터 프레임')
     st.data_editor(
         data=df,
         use_container_width=True,
@@ -68,7 +68,4 @@ def run_home():
         hide_index=True,
     )
 
-    
-
     st.markdown('<hr>', unsafe_allow_html=True)
-

@@ -51,46 +51,20 @@ def run_comparing(df):
     result = get_result_pd(models, names, X_test, y_test)
 
     st.markdown('''
-    ## 모델의 성능비교
+    #### 모델의 성능비교
     ''')
-    df['CustomerId'] = df['CustomerId'].astype(str)
-    df['IsActiveMember'] = df['IsActiveMember'].astype(int)
-    df['HasCrCard'] = df['HasCrCard'].astype(int)
-
-    column_configuration = {
-        'id': st.column_config.NumberColumn(
-            'id', help='The id of the user'
-        ),
-        'CustomerId': st.column_config.TextColumn(
-            'CustomerId', help='The unique id of the customer'
-        ),
-        'HasCrCard': st.column_config.CheckboxColumn(
-            'HasCrCard', help='HasCrCard'
-        ),
-        'IsActiveMember': st.column_config.CheckboxColumn(
-            'IsActiveMember', help='IsActiveMember'
-        )
-    }
-
-    st.data_editor(
-        data=df,
-        use_container_width=True,
-        column_config=column_configuration,
-        num_rows="fixed",
-        hide_index=True,
-    )
-
     
+    st.data_editor(data=result, use_container_width=True)
 
     st.markdown('<hr>', unsafe_allow_html=True)
     st.markdown('''
-    ## ROC Curve 비교
+    #### ROC Curve 비교
     ''')
     plot_roc_curve(models, names, X_test, y_test)
     
     st.markdown('<hr>', unsafe_allow_html=True)
     st.markdown('''
-    ## 특성 중요도(XGBoost)
+    #### 특성 중요도(XGBoost)
     ''')
     for model in models:        
         if isinstance(model.estimator, XGBClassifier):
@@ -114,3 +88,5 @@ def run_comparing(df):
         st.dataframe(fi)
     with col2:
         st.plotly_chart(fig, use_container_width=True)
+    
+    

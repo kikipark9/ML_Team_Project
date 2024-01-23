@@ -11,15 +11,21 @@ from ml.result_prediction import run_prediction
 def home():
     st.markdown('''
     ### 머신러닝 개요
+    - 사용한 모델
+        - Logistic Regression
+        - Decision Tree
+        - Random Forest
+        - XGBoost
+        - LGBM
+        - CatBoost : [공식 레퍼런스](https://catboost.ai/)
     - 모델별 성능 비교
-        - Logistic Regression, Decision Tree, Random Forest, XGBoost, LGBM, CatBoost
     - 
     ''')
 
 
 def run_ml(df):
     st.markdown("""
-    ## 머신러닝을 활용한 고객별 이탈 예측
+    ## 머신러닝을 활용한 고객 이탈 예측 모델
     """)
     
     selected = option_menu(None, ['Home', '성능비교', '테스트 결과', '고객별 예측'],

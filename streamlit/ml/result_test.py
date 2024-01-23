@@ -2,47 +2,63 @@
 
 import streamlit as st
 import pandas as pd
-from utils import load_test_data, load_models
+from utils import load_test_data, load_models, process_test_data
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, confusion_matrix
 from catboost import CatBoostClassifier
 from xgboost import XGBClassifier
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 
-@st.cache_data
-def process_test_data(df):
-    df = df.drop(columns=['RowNumber', 'Surname'])
-    df.drop_duplicates(inplace=True)
-    df.dropna(inplace=True)
+def get_clf_eval(y_test, pred, pred_proba):
+    acc = accuracy_score(y_test,pred)
+    pre = precision_score(y_test,pred)
+    re = recall_score(y_test,pred)
+    f1 = f1_score(y_test,pred)
+    auc = roc_auc_score(y_test,pred_proba)    
+    return acc, pre, re, f1, auc
 
-    customers = df['CustomerId']
-    df_test = df.drop(columns=['CustomerId'])
-    ndf = pd.get_dummies(df_test, columns=['Geography','Gender'])
-
-    X = ndf.drop(['Exited'], axis=1)
-    y = ndf['Exited']
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=13)
-    return X_test, y_test, customers
+def plot_confusion_matrix(confusion):
+    plt.figure(figsize=(8, 6))
+    sns.heatmap(confusion, annot=True, fmt='g', cmap='Blues')
+    plt.xlabel('Predicted')
+    plt.ylabel('Actual')    
+    st.pyplot(plt)
 
 
+def print_clf_eval(y_test, pred, pred_proba):
+    confusion = confusion_matrix(y_test, pred)
+    acc, pre, re, f1, auc = get_clf_eval(y_test, pred, pred_proba)
+
+    st.markdown("#### Confusion Matrix")
+    plot_confusion_matrix(confusion)
+    result = pd.DataFrame({'Accuracy': [acc], 'Precision': [pre], 'Recall': [re], 'F1': [f1], 'ROC_AUC': [auc]})
+    st.markdown("##### Metiric Result")
+    st.dataframe(result, use_container_width=True)    
+
+    
 def run_test():
     df_test = load_test_data()
     models, names = load_models()
-    X_test, y_test, customers = process_test_data(df_test)
+    X, y, customers = process_test_data(df_test)
 
     for model in models:        
         if isinstance(model.estimator, CatBoostClassifier):
             cat = model.best_estimator_
-            predictions = cat.predict(X_test)
-            result_cat = pd.DataFrame({'CustomerId': customers, 'Real': y_test, 'Prediction': predictions})
-            st.write(f"Predictions by Catboost:")            
+            cat_pred = cat.predict(X)
+            cat_proba = cat.predict_proba(X)[:,1]
+            
+            st.markdown("### Predictions by Catboost:")
+            print_clf_eval(y, cat_pred, cat_proba)
             
         elif isinstance(model.estimator, XGBClassifier):
-            xgb = model.best_estimator_
-            predictions = xgb.predict(X_test)
-            st.write(f"Predictions by XGBoost:")
-            result_xgb = pd.DataFrame({'CustomerId': customers, 'Real': y_test, 'Prediction': predictions})
-            st.write(f"Predictions by Catboost:")
+            xgb = model.best_estimator_            
+            xgb_pred = xgb.predict(X)
+            xgb_proba = xgb.predict_proba(X)[:,1]
+            
+            st.markdown('<hr>', unsafe_allow_html=True)
+            st.markdown("### Predictions by XGBoost:")
+            print_clf_eval(y, xgb_pred, xgb_proba)
         else:
             pass
-
-        
