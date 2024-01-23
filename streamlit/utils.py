@@ -9,6 +9,7 @@ import joblib
 
 @st.cache_data
 def load_data():
+    current_dir = os.getcwd()
     data = pd.read_csv('../data/train.csv/train.csv')
     return data
 
