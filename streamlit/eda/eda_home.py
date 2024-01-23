@@ -36,17 +36,16 @@ def home():
 def explore():
     selection = st.sidebar.selectbox(
         ":Yellow[Option]",
-        ("전체 데이터 분포", "타겟 데이터 분포", "범주형 데이터 분포", "수치형 데이터 분포"),
+        ("전체 데이터", "타겟 데이터", "범주형 데이터", "수치형 데이터"),
     )
     return selection
+
 
 
 def run_eda(df):
     st.markdown('''
     # 탐색적 자료 분석(EDA)
-    탐색적 자료 분석 페이지입니다.\n
-    EDA는 데이터를 다양한 각도에서 관찰하고 이해하는 모든 과정으로, 데이터 분석의 가장 중요한 초기 프로세스입니다.
-                               ''')
+    ''')
     
     selected = option_menu(None, ['Home', 'Visualization'],
                            icons=['house', 'bar-chart'],
@@ -65,22 +64,33 @@ def run_eda(df):
         home()
     elif selected == 'Visualization':
         ok = explore()
-        if ok == "전체 데이터 분포":
+        if ok == "전체 데이터":
+            tab1, tab2, tab3 = st.tabs(["데이터 분포", "이탈에 따른 데이터 분포", "상관계수"])
+            with tab1:                
+                plot_target()
+                cat_cols_graph()
+            with tab2:                
+                cat_exited_graph()
+                num_exited_graph()
+                age_to_cat_graph()
+            with tab3:                
+                cat_heatmap()
+                num_heatmap()
+        elif ok == "타겟 데이터":
             plot_target()
-            cat_cols_graph()
-            cat_exited_graph()
-            num_exited_graph()
-            age_to_cat_graph()
-            cat_heatmap()
-            num_heatmap()
-        elif ok == "타겟 데이터 분포":
-            plot_target()
-        elif ok == "범주형 데이터 분포":
-            cat_cols_graph()
-            cat_exited_graph()
-            cat_heatmap()
-        elif ok == "수치형 데이터 분포":
-            num_exited_graph()
-            age_to_cat_graph()
-            num_heatmap()
+        elif ok == "범주형 데이터":
+            tab1, tab2, tab3 = st.tabs(["데이터 분포", "이탈에 따른 데이터 분포", "상관계수"])
+            with tab1:                
+                cat_cols_graph()
+            with tab2:                
+                cat_exited_graph()
+            with tab3:                
+                cat_heatmap()
+        elif ok == "수치형 데이터":
+            tab1, tab2 = st.tabs(["이탈에 따른 데이터 분포", "상관계수"])
+            with tab1:
+                num_exited_graph()
+                age_to_cat_graph()
+            with tab2:
+                num_heatmap()
 
