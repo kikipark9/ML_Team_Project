@@ -43,8 +43,6 @@ def plot_target():
     plt.setp(ax[1].get_xticklabels(), fontweight="bold")
     plt.yticks([])
     plt.box(False)
-
-    fig.suptitle(x=0.56, t=f"이탈 컬럼 분포", fontsize=18, fontweight='bold')
     plt.tight_layout()
     st.pyplot(fig)
 
@@ -61,9 +59,6 @@ def cat_cols_graph():
         ax[1].bar_label(ax[1].containers[0])
         plt.suptitle(f'{column}')
         st.pyplot(fig)
-
-# def cat_exited_graph():
-#     st.write("""### 이탈 여부에 따른 범주형 데이터 분포""")
 
 def cat_exited_graph():
     st.write("""### 이탈 여부에 따른 범주형 데이터 분포""")
