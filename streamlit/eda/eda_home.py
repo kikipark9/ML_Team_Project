@@ -3,26 +3,53 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
 import pandas as pd
+from utils import load_data
+from eda.viz import plot_target
+from eda.viz import cat_cols_graph
+from eda.viz import cat_exited_graph
+from eda.viz import num_exited_graph
+from eda.viz import age_to_cat_graph
+from eda.viz import cat_heatmap
+from eda.viz import num_heatmap
 
+def img():
+    image_object = st.image(
+        "https://emyrael.github.io/assets/img/churn.png"
+    )
+    return image_object
 
 def home():
     st.markdown('''
-    # EDA_HOME
-    - 변수 별 분석
+    ## EDA 목표
+    - 변수 간 트렌드, 패턴, 관계 파악
+    - 데이터의 이상치 및 결측치 파악
+    - 프로젝트 초기 가설 수립
+    - 다양한 모델 비교를 통한 최적의 모델 선정
     ''')
-    st.markdown('### Visualization')
-    st.markdown('### Statistics')
+    st.markdown('''
+    ## Visualization
+    - 타겟 데이터
+    - 범주형 데이터
+    - 수치형 데이터
+    ''')
+
+def explore():
+    selection = st.sidebar.selectbox(
+        ":Yellow[Option]",
+        ("전체 데이터 분포", "타겟 데이터 분포", "범주형 데이터 분포", "수치형 데이터 분포"),
+    )
+    return selection
 
 
 def run_eda(df):
     st.markdown('''
-    ## 탐색적 자료 분석 개요
+    # 탐색적 자료 분석(EDA)
     탐색적 자료 분석 페이지입니다.\n
-    내용을 추가할 수 있습니다.
-                ''')
+    EDA는 데이터를 다양한 각도에서 관찰하고 이해하는 모든 과정으로, 데이터 분석의 가장 중요한 초기 프로세스입니다.
+                               ''')
     
-    selected = option_menu(None, ['Home', 'Visualization', 'Statistics'],
-                           icons=['house', 'bar-chart', 'file-spreadsheet'],
+    selected = option_menu(None, ['Home', 'Visualization'],
+                           icons=['house', 'bar-chart'],
                            menu_icon='cast', default_index=0, orientation='horizontal',
                            styles={
                                'container': {'padding': '0!important', 'background-color': '#fafafa'},
@@ -32,9 +59,28 @@ def run_eda(df):
                                    }
                            )
     
+    
     if selected == 'Home':
+        img()
         home()
     elif selected == 'Visualization':
-        pass
-    elif selected == 'Statistics':
-        pass
+        ok = explore()
+        if ok == "전체 데이터 분포":
+            plot_target()
+            cat_cols_graph()
+            cat_exited_graph()
+            num_exited_graph()
+            age_to_cat_graph()
+            cat_heatmap()
+            num_heatmap()
+        elif ok == "타겟 데이터 분포":
+            plot_target()
+        elif ok == "범주형 데이터 분포":
+            cat_cols_graph()
+            cat_exited_graph()
+            cat_heatmap()
+        elif ok == "수치형 데이터 분포":
+            num_exited_graph()
+            age_to_cat_graph()
+            num_heatmap()
+
