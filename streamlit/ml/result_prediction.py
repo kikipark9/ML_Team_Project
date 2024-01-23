@@ -6,6 +6,19 @@ from utils import load_test_data, load_models, process_test_data
 from catboost import CatBoostClassifier
 
 
+def highlight_exit_prob(value):
+    """Exit_Probability 값에 따라 색상을 지정하는 함수"""
+    if value > 0.75:
+        color = 'rgba(255, 0, 0, 0.5)'  # 빨간색, 반투명
+    elif value > 0.5:
+        color = 'rgba(255, 165, 0, 0.5)'  # 주황색, 반투명
+    elif value > 0.25:
+        color = 'rgba(255, 255, 0, 0.5)'  # 노란색, 반투명
+    else:
+        color = 'rgba(0, 128, 0, 0.5)'  # 녹색, 반투명
+    return f'background-color: {color}'
+
+
 def run_prediction():
     df_test = load_test_data()
     models, names = load_models()
@@ -39,5 +52,5 @@ def run_prediction():
     result = ndf[ndf['CustomerId'] == find_customer]
     
     st.markdown('### 조회 고객의 이탈 확률')    
-    st.dataframe(result)
+    st.dataframe(result.style.applymap(highlight_exit_prob, subset=['Exit_Probability']), use_container_width=True)
     

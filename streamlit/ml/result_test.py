@@ -43,6 +43,10 @@ def run_test():
     models, names = load_models()
     X, y, customers = process_test_data(df_test)
 
+    st.markdown("##### 테스트 데이터\n"
+                '- 데이터 포인트 : 10,002개')
+    st.divider()
+    
     for model in models:        
         if isinstance(model.estimator, CatBoostClassifier):
             cat = model.best_estimator_

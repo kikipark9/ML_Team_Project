@@ -9,6 +9,13 @@ from utils import do_preprocess, load_models
 from xgboost import XGBClassifier
 
 
+def highlight_largest_recall(df):
+    top2 = df['recall'].nlargest(2).index
+    styles = pd.DataFrame('', index=df.index, columns=df.columns)
+    styles.loc[top2, :] = 'background-color: rgba(255, 235, 59, 0.3)'
+    return styles
+
+
 def get_result(model, X_test, y_test):
     model_proba = model.predict_proba(X_test)
     model_pred = model.predict(X_test)
@@ -49,12 +56,14 @@ def run_comparing(df):
 
     models, names = load_models()
     result = get_result_pd(models, names, X_test, y_test)
+    result['recall'] = result['recall'].astype(float)
+    result_styled = result.style.apply(highlight_largest_recall, axis=None)
 
     st.markdown('''
-    #### 모델의 성능비교
+    #### 모델 성능비교
     ''')
     
-    st.data_editor(data=result, use_container_width=True)
+    st.dataframe(data=result_styled, use_container_width=True)
 
     st.markdown('<hr>', unsafe_allow_html=True)
     st.markdown('''
@@ -88,5 +97,4 @@ def run_comparing(df):
         st.dataframe(fi)
     with col2:
         st.plotly_chart(fig, use_container_width=True)
-    
     

@@ -12,14 +12,18 @@ def home():
     st.markdown('''
     ### 머신러닝 개요
     - 사용한 모델
-        - Logistic Regression
-        - Decision Tree
-        - Random Forest
-        - XGBoost
-        - LGBM
-        - CatBoost : [공식 레퍼런스](https://catboost.ai/)
-    - 모델별 성능 비교
-    - 
+        - *Logistic Regression*
+        - *Decision Tree*
+        - *Random Forest*
+        - *XGBoost*
+        - *LGBM*
+        - *CatBoost* : [공식 레퍼런스](https://catboost.ai/)
+    - 주요 평가 지표
+        - **AUC Score** : 종합 성능 평가지표. 모델이 얼마나 다양한 임계값에서 이탈 고객과 비이탈 고객을 구별하는지를 평가.
+        - **Recall** : 실제 이탈 고객 중 모델이 이탈로 예측한 비율. 고객 유지가 중요한 비즈니스에서 이탈 고객 식별을 위해 높은 재현율의 모델을 채택
+    - 모델별 성능 비교 및 중요 변수 파악
+    - [Bank Customer Churn Prediction](https://www.kaggle.com/datasets/shubhammeshram579/bank-customer-churn-prediction) 데이터를 사용한 테스트
+    - 고객별 이탈 확률 제공
     ''')
 
 
